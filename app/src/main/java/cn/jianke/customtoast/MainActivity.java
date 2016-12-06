@@ -1,5 +1,6 @@
 package cn.jianke.customtoast;
 
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,7 +13,7 @@ import android.widget.Toast;
  * @createTime: 2016/12/6
  */
 public class MainActivity extends AppCompatActivity {
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,12 +22,40 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_notification).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean isNotificationEnabled = ToastUtils.isNotificationEnabled(MainActivity.this);
-                Toast.makeText(MainActivity.this, "消息通知权限测试", Toast.LENGTH_SHORT).show();
-                System.out.println("dddddddddddddddddddddddd isNotificationEnabled  = " + isNotificationEnabled);
-                CustomToast.getInstance().show("测试一下数据", MainActivity.this, CustomToast.LENGTH_SHORT);
+                // 处理消息通知权限是否可用
+                dealNotificationEnabled();
             }
         });
+    }
+    
+    /**
+     * 处理消息通知权限是否可用
+     * @author leibing
+     * @createTime 2016/12/6
+     * @lastModify 2016/12/6
+     * @param
+     * @return
+     */
+    public void dealNotificationEnabled(){
+        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.KITKAT){
+            // 4.4版本以上处理
+            if (ToastUtils.isNotificationEnabled(MainActivity.this)){
+                // 可用（正常弹窗即可）
+                Toast.makeText(MainActivity.this, "正常Toast", Toast.LENGTH_SHORT).show();
+            }else {
+                // 采用自定义方式处理
+                CustomToast.getInstance().show("自定义Toast", MainActivity.this,
+                        CustomToast.LENGTH_SHORT);
+            }
+        }else {
+            // 4.3版本以下处理
+            try {
+                // 正常弹窗处理
+                Toast.makeText(MainActivity.this, "正常Toast", Toast.LENGTH_SHORT).show();
+            }catch (Exception ex){
+                // 捕捉异常处理
+            }
+        }
     }
 
 }

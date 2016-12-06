@@ -1,5 +1,6 @@
 package cn.jianke.customtoast;
 
+
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -18,7 +19,7 @@ public class ToastUtils {
     private static final String OP_POST_NOTIFICATION = "OP_POST_NOTIFICATION";
 
     /**
-     * 是否拥有消息通知权限
+     * 是否拥有消息通知权限(4.3版本以上处理方式)
      * @author leibing
      * @createTime 2016/12/6
      * @lastModify 2016/12/6

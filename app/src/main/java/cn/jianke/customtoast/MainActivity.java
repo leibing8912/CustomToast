@@ -22,21 +22,21 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_notification).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 处理消息通知权限是否可用
-                dealNotificationEnabled();
+//                // 处理消息通知权限是否可用
+                dealNotificationEnabledForDialog();
             }
         });
     }
-    
+
     /**
-     * 处理消息通知权限是否可用
+     * 处理消息通知权限是否可用(Toast处理)
      * @author leibing
      * @createTime 2016/12/6
      * @lastModify 2016/12/6
      * @param
      * @return
      */
-    public void dealNotificationEnabled(){
+    public void dealNotificationEnabledForToast(){
         if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.KITKAT){
             // 4.4版本以上处理
             if (ToastUtils.isNotificationEnabled(MainActivity.this)){
@@ -58,4 +58,44 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 处理消息通知权限是否可用(Dialog处理)
+     * @author leibing
+     * @createTime 2016/12/6
+     * @lastModify 2016/12/6
+     * @param
+     * @return
+     */
+    public void dealNotificationEnabledForDialog(){
+        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.KITKAT){
+            // 4.4版本以上处理
+            if (ToastUtils.isNotificationEnabled(MainActivity.this)){
+                // 可用（正常弹窗即可）
+
+            }else {
+                // 采用自定义方式处理
+                CustomDialog.getInstance().show("标题", "内容", MainActivity.this,
+                        new CustomDialog.CustomDialogListener() {
+                            @Override
+                            public void onClick(int target) {
+                            }
+                        });
+            }
+        }else {
+            // 4.3版本以下处理
+            try {
+                // 正常弹窗处理
+
+            }catch (Exception ex){
+                // 捕捉异常处理
+                // 采用自定义方式处理
+                CustomDialog.getInstance().show("标题", "内容", MainActivity.this,
+                        new CustomDialog.CustomDialogListener() {
+                            @Override
+                            public void onClick(int target) {
+                            }
+                        });
+            }
+        }
+    }
 }
